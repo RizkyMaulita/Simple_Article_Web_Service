@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --runInBand --forceExit --verbose --detectOpenHandles",
-    "dev": "nodemon server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
     "db:create:dev": "NODE_ENV=development npx sequelize db:create",
     "db:migrate:dev": "NODE_ENV=development npx sequelize db:migrate",
     "db:migrate:undo:dev": "NODE_ENV=development npx sequelize db:migrate:undo:all",

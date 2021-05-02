@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { getCurrentDate } = require('../helpers')
 module.exports = (sequelize, DataTypes) => {
   class Article extends Model {
     /**
@@ -14,12 +15,50 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Article.init({
-    author: DataTypes.TEXT,
-    title: DataTypes.TEXT,
-    body: DataTypes.TEXT,
+    author: {
+      type : DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `Article's author can't be null !`
+        },
+        notEmpty: {
+          msg: `Article's author can't be empty !`
+        }
+      }
+    },
+    title: {
+      type : DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `Article's title can't be null !`
+        },
+        notEmpty: {
+          msg: `Article's title can't be empty !`
+        }
+      }
+    },
+    body: {
+      type : DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `Article's body can't be null !`
+        },
+        notEmpty: {
+          msg: `Article's body can't be empty !`
+        }
+      }
+    },
     created: DataTypes.DATE,
     updated: DataTypes.DATE
   }, {
+    hooks: {
+      beforeCreate (instance) {
+        instance.created = getCurrentDate() 
+      }
+    },
     sequelize,
     createdAt: false,
     updatedAt: false,
