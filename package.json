@@ -1,0 +1,42 @@
+{
+  "name": "simple_article_web_service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest --runInBand --forceExit --verbose --detectOpenHandles",
+    "dev": "nodemon server.js",
+    "db:create:dev": "NODE_ENV=development npx sequelize db:create",
+    "db:migrate:dev": "NODE_ENV=development npx sequelize db:migrate",
+    "db:migrate:undo:dev": "NODE_ENV=development npx sequelize db:migrate:undo:all",
+    "db:seed:dev": "NODE_ENV=development npx sequelize db:seed:all",
+    "db:create:test": "NODE_ENV=test npx sequelize db:create",
+    "db:migrate:test": "NODE_ENV=test npx sequelize db:migrate",
+    "db:migrate:undo:test": "NODE_ENV=test npx sequelize db:migrate:undo:all",
+    "db:seed:test": "NODE_ENV=test npx sequelize db:seed:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RizkyMaulita/Simple_Article_Web_Service.git"
+  },
+  "keywords": [],
+  "author": "Rizky Maulita Putri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RizkyMaulita/Simple_Article_Web_Service/issues"
+  },
+  "homepage": "https://github.com/RizkyMaulita/Simple_Article_Web_Service#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "ioredis": "^4.27.1",
+    "pg": "^8.6.0",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.3"
+  }
+}
