@@ -1,6 +1,5 @@
 const { Article } = require('../../models')
-const Redis = require('ioredis')
-const redis = new Redis()
+const { redis, patternKeyArticle } = require('../../config/redis')
 
 module.exports = async (req, res, next) => {
   try {
@@ -18,7 +17,7 @@ module.exports = async (req, res, next) => {
       }
       const createArticle = await Article.create(payload)
       if (createArticle) {
-        await redis.set(`${process.env.NODE_ENV}_${process.env.ARTICLE_KEY_REDIS}_${createArticle.id}`, JSON.stringify(createArticle))
+        await redis.set(`${patternKeyArticle}_${createArticle.id}`, JSON.stringify(createArticle))
         res.status(201).json({
           message: `Successfully create new article !`,
           data: createArticle
