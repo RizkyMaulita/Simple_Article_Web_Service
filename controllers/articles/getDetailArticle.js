@@ -1,6 +1,6 @@
 const { Article } = require('../../models')
 const { redis, patternKeyArticle } = require('../../config/redis')
-const { sortData } = require('../../helpers')
+const { sortData, searchAndFilterData } = require('../../helpers')
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,26 +16,9 @@ module.exports = async (req, res, next) => {
         const data = findCaches.map(cache => JSON.parse(cache))
         const sortingData = sortData(data, 'id', 'DESC')
         if (query || author) {
-          let searchByKeyword = []
-          if (query) {
-            const queryRegex = new RegExp(query, 'i')
-            sortingData.forEach(article => {
-              if (queryRegex.test(article.title) || queryRegex.test(article.body)) {
-                searchByKeyword.push(article)
-              }
-            })
-          } else {
-            searchByKeyword = sortingData
-          }
-          let searchByAuthor = []
-          if (author) {
-            const authorRegex = new RegExp(author, 'i')
-            searchByAuthor = searchByKeyword.filter(article => authorRegex.test(article.author))
-          } else {
-            searchByAuthor = searchByKeyword
-          }
-          if (searchByAuthor.length) {
-            res.status(200).json(searchByAuthor)
+          const result = searchAndFilterData(sortingData, query, author)
+          if (result.length) {
+            res.status(200).json(result)
           } else throw {
             status: 404,
             message: `Data Not Found !`
@@ -55,26 +38,9 @@ module.exports = async (req, res, next) => {
         })
         await Promise.all(arrPromises)
         if ( query || author ) {
-          let searchByKeyword = []
-          if (query) {
-            const queryRegex = new RegExp(query, 'i')
-            findData.forEach(article => {
-              if (queryRegex.test(article.title) || queryRegex.test(article.body)) {
-                searchByKeyword.push(article)
-              }
-            })
-          } else {
-            searchByKeyword = findData
-          }
-          let searchByAuthor = []
-          if (author) {
-            const authorRegex = new RegExp(author, 'i')
-            searchByAuthor = searchByKeyword.filter(article => authorRegex.test(article.author))
-          } else {
-            searchByAuthor = searchByKeyword
-          }
-          if (searchByAuthor.length) {
-            res.status(200).json(searchByAuthor)
+          const result = searchAndFilterData(findData, query, author)
+          if (result.length) {
+            res.status(200).json(result)
           } else throw {
             status: 404,
             message: `Data Not Found !`
