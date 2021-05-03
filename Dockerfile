@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /home/tech_test/node/rizky_maulita_putri/article_web_service
 
-COPY . .
+COPY package*.json ./
 
 ENV PORT=3000 \
     DB_USERNAME_DEVELOPMENT=postgres \
@@ -10,29 +10,25 @@ ENV PORT=3000 \
     DB_NAME_DEVELOPMENT=article_staging \
     DB_HOST_DEVELOPMENT=postgres \
     DB_DIALECT_DEVELOPMENT=postgres \
+    DB_USERNAME_PRODUCTION=postgres \
+    DB_PASSWORD_PRODUCTION=postgres \
+    DB_NAME_PRODUCTION=article_production \
+    DB_HOST_PRODUCTION=postgres \
+    DB_DIALECT_PRODUCTION=postgres \
     DB_USERNAME_TEST=postgres \
     DB_PASSWORD_TEST=postgres \
     DB_NAME_TEST=article_staging_test \
     DB_HOST_TEST=postgres \
     DB_DIALECT_TEST=postgres \
-    ARTICLE_KEY_REDIS=staging_article \
+    ARTICLE_KEY_REDIS=article \
     REDIS_HOST=redis
 
 RUN env
 
-RUN npm install -g nodemon
-
 RUN npm install && npm cache clean --force
 
-# RUN npm run db:create:dev
-
-# RUN npm run db:create:test
-
-# RUN npx sequelize db:migrate
-
-# RUN npm run db:migrate:test
-
+COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
