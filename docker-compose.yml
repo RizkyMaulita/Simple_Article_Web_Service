@@ -1,0 +1,46 @@
+version: '3'
+
+services: 
+  postgres:
+    image: "postgres:11-alpine"
+    environment: 
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "article_staging"
+    # env_file: 
+    #   - database.env
+    volumes:
+      - database-data:/var/lib/postgresql/data/ 
+    ports: 
+      - 5432
+    command: "docker run --rm -P -e POSTGRES_PASSWORD='postgres' --name pg postgres:11-alpine"
+  redis:
+    image: "redis:alpine"
+    ports: 
+      - 6380
+    command: "redis-server --daemonize yes"
+  
+  articles:
+    depends_on: 
+      - postgres
+      - redis
+    build: .
+    environment: 
+      - PORT=3000
+      - DB_USERNAME_DEVELOPMENT=postgres 
+      - DB_PASSWORD_DEVELOPMENT=postgres 
+      - DB_NAME_DEVELOPMENT=article_staging 
+      - DB_HOST_DEVELOPMENT=postgres 
+      - DB_DIALECT_DEVELOPMENT=postgres 
+      - DB_USERNAME_TEST=postgres 
+      - DB_PASSWORD_TEST=postgres 
+      - DB_NAME_TEST=article_staging_test 
+      - DB_HOST_TEST=postgres 
+      - DB_DIALECT_TEST=postgres 
+      - ARTICLE_KEY_REDIS=staging_article 
+      - REDIS_HOST=redis
+    ports: 
+      - "3000:3000"
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
