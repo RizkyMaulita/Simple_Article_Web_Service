@@ -4,7 +4,7 @@
   "description": "a technical test from kumparan",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && jest --runInBand --forceExit --verbose --detectOpenHandles",
+    "test": "NODE_ENV=test jest --runInBand --forceExit --verbose --detectOpenHandles",
     "dev": "NODE_ENV=development nodemon server.js",
     "start": "NODE_ENV=production npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && node server.js",
     "db:create:dev": "NODE_ENV=development npx sequelize db:create",
